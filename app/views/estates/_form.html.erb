@@ -1,0 +1,48 @@
+<% if @estate.errors.any? %>
+  <div class="alert alert-warning">
+    <ul>
+      <% @estate.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= form_with(model: @estate, local: true, url: path_choose, method: request_choose)  do |f| %>
+  <p>
+    <%= f.label :"物件名" %><br>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :"賃料" %><br>
+    <%= f.number_field :rent %>円
+  </p>
+  <p>
+    <%= f.label :"住所" %><br>
+    <%= f.text_field :address %>
+  </p>
+  <p>
+    <%= f.label :"築年数" %><br>
+    <%= f.number_field :age %>年
+  </p>
+  <p>
+    <%= f.label :"備考" %><br>
+    <%= f.text_area :remarks %>
+  </p>
+  <% i = 1 %>
+  <div class='form_area'>
+    <%= f.fields_for :stations do |s| %>
+      <div class='station_component'>
+        <p><strong><%= "最寄り駅 #{i}" %></strong></p>
+        <p><%= s.label :"路線名" %></p>
+        <p><%= s.text_field :route %></p>
+        <p><%= s.label :"駅名" %></p>
+        <p><%= s.text_field :name %></p>
+        <p><%= s.label :"徒歩分数" %></p>
+        <p><%= s.number_field :on_foot %>分</p>
+      </div>
+      <% i += 1 %>
+    <% end %>
+  </div>
+  <p><%= f.submit button_text, class: 'submit_button' %></p>
+<% end %>
+<%= link_to "戻る", estates_path, class: 'back_button' %>
